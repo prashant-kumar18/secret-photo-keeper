@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:secret/provider/backend.dart';
 import 'package:secret/screen/Calui.dart';
-// import 'package:secret/screen/Calui.dart';
 import 'package:secret/screen/GalUi.dart';
 
 void main() {

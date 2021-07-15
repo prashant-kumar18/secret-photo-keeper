@@ -13,11 +13,19 @@ class CalUi extends StatefulWidget {
 class _UiState extends State<CalUi> {
   var size;
   var b;
+  var message = [
+    "Hi",
+    "Welcome to Secret Photo Keeper",
+    "Press and Hold 'AC'",
+    "TO Set and reset sequence"
+  ];
+  var m = "";
   bool editmode = false;
   double t = 35;
   @override
   void initState() {
     b = Provider.of<Backend>(context, listen: false);
+
     super.initState();
   }
 

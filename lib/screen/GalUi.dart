@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:secret/provider/backend.dart';
@@ -12,32 +14,64 @@ class _GalUiState extends State<GalUi> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-        floatingActionButton: Consumer<Backend>(
-          builder: (ctx, backend, child) => ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).accentColor)),
-            child: Text(
-              "Calculator",
-              style: TextStyle(color: Theme.of(context).cardColor),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          shadowColor: Colors.white.withOpacity(0),
+          actions: [
+            Consumer<Backend>(
+              builder: (ctx, backend, child) => IconButton(
+                iconSize: 40,
+                icon: Icon(
+                  backend.dark ? Icons.mode_night : Icons.light_mode,
+                  color: backend.dark ? Colors.white : Colors.orange,
+                ),
+                onPressed: () {
+                  backend.darkmode();
+                },
+
+                // <-- Button color
+              ),
             ),
-            onPressed: () {
-              backend.authf();
-            },
-          ),
+            Consumer<Backend>(
+              builder: (ctx, backend, child) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context).accentColor)),
+                  child: Text(
+                    "Calculator",
+                    style: TextStyle(color: Theme.of(context).cardColor),
+                  ),
+                  onPressed: () {
+                    backend.authf();
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
+        floatingActionButton: Container(
+          padding: EdgeInsets.all(10),
+          alignment: Alignment.bottomRight,
+          child: FloatingActionButton(
+              child: Icon(Icons.photo),
+              onPressed: () {
+                Provider.of<Backend>(context, listen: false).pickimage(context);
+              }),
+        ),
+
+        // floatingActionButton:
         body: Column(children: [
-          SizedBox(height: 60),
           Container(
             padding: EdgeInsets.all(20),
-            height: MediaQuery.of(context).size.height * 0.8,
+            height: MediaQuery.of(context).size.height * 0.9,
             child: FutureBuilder(
               future: Provider.of<Backend>(context, listen: false).images(),
               builder: (ctx, snapshot) {
-                print("1");
                 if (snapshot.connectionState == ConnectionState.done &&
                     snapshot.data.isNotEmpty) {
+                  print(snapshot.data);
                   return GridView.count(
                     crossAxisCount: 3,
                     crossAxisSpacing: 10,
@@ -96,16 +130,16 @@ class _GalUiState extends State<GalUi> {
               },
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(10),
-            alignment: Alignment.bottomRight,
-            child: FloatingActionButton(
-                child: Icon(Icons.photo),
-                onPressed: () {
-                  Provider.of<Backend>(context, listen: false)
-                      .pickimage(context);
-                }),
-          ),
+          // Container(
+          //   padding: EdgeInsets.all(10),
+          //   alignment: Alignment.bottomRight,
+          //   child: FloatingActionButton(
+          //       child: Icon(Icons.photo),
+          //       onPressed: () {
+          //         Provider.of<Backend>(context, listen: false)
+          //             .pickimage(context);
+          //       }),
+          // ),
         ]),
       ),
     );

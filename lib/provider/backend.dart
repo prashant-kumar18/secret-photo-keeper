@@ -90,8 +90,9 @@ class Backend with ChangeNotifier {
 
   Future firsttimef() async {
     var sharedpref = await SharedPreferences.getInstance();
+    // sharedpref.remove("firsttime");
+    // sharedpref.remove("code");
 
-    print("firsttime=" + sharedpref.getBool("firsttime").toString());
     codestring = sharedpref.getString("code");
     print(codestring);
 
