@@ -107,51 +107,52 @@ class Backend with ChangeNotifier {
 
   // Future user() async {}
   void work(value) async {
-    var sharedpref = await SharedPreferences.getInstance();
-    String str = "";
+    try {
+      var sharedpref = await SharedPreferences.getInstance();
+      String str = "";
 
-    if (value == "=") {
-      if (temp.isNotEmpty) {
-        for (var i = 0; i < temp.length; i++) {
-          str += temp[i].toString();
-        }
-        if (resetting == true) {
-          print("====");
-          reset(str);
-          return;
-        }
-        if (code.isNotEmpty) {
-          codestring = "";
-          for (var i = 0; i < code.length; i++) {
-            codestring += code[i].toString();
+      if (value == "=") {
+        if (temp.isNotEmpty) {
+          for (var i = 0; i < temp.length; i++) {
+            str += temp[i].toString();
           }
-          sharedpref.setString("code", codestring);
+          if (resetting == true) {
+            print("====");
+            reset(str);
+            return;
+          }
+          if (code.isNotEmpty) {
+            codestring = "";
+            for (var i = 0; i < code.length; i++) {
+              codestring += code[i].toString();
+            }
+            sharedpref.setString("code", codestring);
 
+            if (str == codestring && resetting == false) {
+              print("resetting" + resetting.toString());
+
+              authf();
+              return;
+            }
+          }
           if (str == codestring && resetting == false) {
-            print("resetting" + resetting.toString());
-
             authf();
             return;
           }
-        }
-        if (str == codestring && resetting == false) {
-          authf();
-          return;
-        }
-        if (editmode) {
-          print("here3");
-          editmessage = "";
-          for (var i = 0; i < code.length; i++) {
-            editmessage += code[i].toString() + " ";
+          if (editmode) {
+            print("here3");
+            editmessage = "";
+            for (var i = 0; i < code.length; i++) {
+              editmessage += code[i].toString() + " ";
+            }
+            editmessage = "Your secret code is " + editmessage;
+            temp.clear();
+            history.clear();
+            notifyListeners();
+            code.clear();
+            return;
           }
-          editmessage = "Your secret code is " + editmessage;
-          temp.clear();
-          history.clear();
-          notifyListeners();
-          code.clear();
-          return;
-        }
-        try {
+
           var c = str.interpret();
           history.add(c);
           Iterable inReverse = history.reversed;
@@ -160,28 +161,28 @@ class Backend with ChangeNotifier {
           temp = [];
           temp.add(c);
           notifyListeners();
-        } catch (e) {
-          print("error=" + e.toString());
         }
-      }
-    } else if (value == "<-") {
-      if (temp.isNotEmpty) {
-        if (editmode) code.removeLast();
-        temp.removeLast();
+      } else if (value == "<-") {
+        if (temp.isNotEmpty) {
+          if (editmode) code.removeLast();
+          temp.removeLast();
 
+          notifyListeners();
+        }
+      } else if (value == "AC") {
+        temp.clear();
+        history.clear();
+        notifyListeners();
+      } else if (value == "C") {
+        temp.clear();
+        notifyListeners();
+      } else {
+        if (editmode) code.add(value);
+        temp.add(value);
         notifyListeners();
       }
-    } else if (value == "AC") {
-      temp.clear();
-      history.clear();
-      notifyListeners();
-    } else if (value == "C") {
-      temp.clear();
-      notifyListeners();
-    } else {
-      if (editmode) code.add(value);
-      temp.add(value);
-      notifyListeners();
+    } catch (e) {
+      print("error :-> " + e.toString());
     }
   }
 
