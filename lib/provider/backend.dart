@@ -60,9 +60,11 @@ class Backend with ChangeNotifier {
   void editmodef() {
     print(codestring != null);
     if (codestring != null) {
-      resetting = true;
+      temp.clear();
+      history.clear();
+      resetting = !resetting;
       editmode = !editmode;
-
+      print(editmode);
       editmessage = "Enter Previous Sequence to Reset";
       notifyListeners();
     } else {
@@ -79,6 +81,7 @@ class Backend with ChangeNotifier {
       temp.clear();
       code.clear();
       resetting = false;
+
       notifyListeners();
     } else {
       editmessage = "Wrong Sequence,Retry";
@@ -117,8 +120,9 @@ class Backend with ChangeNotifier {
             str += temp[i].toString();
           }
           if (resetting == true) {
-            print("====");
+            print("====reset");
             reset(str);
+
             return;
           }
           if (code.isNotEmpty) {
@@ -128,12 +132,12 @@ class Backend with ChangeNotifier {
             }
             sharedpref.setString("code", codestring);
 
-            if (str == codestring && resetting == false) {
-              print("resetting" + resetting.toString());
+            // if (str == codestring && resetting == false) {
+            //   print("resetting" + resetting.toString());
 
-              authf();
-              return;
-            }
+            //   authf();
+            //   return;
+            // }
           }
           if (str == codestring && resetting == false) {
             authf();
@@ -152,7 +156,7 @@ class Backend with ChangeNotifier {
             code.clear();
             return;
           }
-
+          print("======");
           var c = str.interpret();
           history.add(c);
           Iterable inReverse = history.reversed;
