@@ -6,7 +6,7 @@ Secert photo Keeper desguised as calculator.
 
 # Screenshots :
 ![alt text](https://github.com/prashant-kumar18/secret-photo-keeper/blob/master/1.jpg)
-![alt text](https://github.com/prashant-kumar18/secret-photo-keeper/blob/master/2.jpg)
+![alt text](https://github.com/prashant-kumar18/secret-photo-keeper/blob/master/4.jpg)
 ![alt text](https://github.com/prashant-kumar18/secret-photo-keeper/blob/master/3.jpg)
 
 # Screens:
